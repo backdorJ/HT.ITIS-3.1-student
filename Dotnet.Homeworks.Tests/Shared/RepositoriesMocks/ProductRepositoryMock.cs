@@ -28,6 +28,12 @@ public class ProductRepositoryMock : IProductRepository
         return Task.CompletedTask;
     }
 
+    public Task<Product> GetProductByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var product = _products[id];
+        return Task.FromResult(product);
+    }
+
     public Task<Guid> InsertProductAsync(Product product, CancellationToken cancellationToken)
     {
         _products.TryAdd(product.Id, product);

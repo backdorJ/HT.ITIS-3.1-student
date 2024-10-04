@@ -1,4 +1,5 @@
 using Dotnet.Homeworks.Data.DatabaseContext;
+using Dotnet.Homeworks.Features;
 using Dotnet.Homeworks.MainProject.Configuration;
 using Dotnet.Homeworks.MainProject.Services;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Masstransit;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Services.AddScoped<ICommunicationService, CommunicationService>();
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.AddMasstransitRabbitMq(rabbitMqConfig);
+builder.Services.AddFeatures();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
