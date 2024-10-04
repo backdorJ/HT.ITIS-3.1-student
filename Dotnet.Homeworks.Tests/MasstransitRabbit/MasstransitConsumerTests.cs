@@ -23,6 +23,7 @@ public class MasstransitConsumerTests
         testEnvBuilder.SetupProducingProcessMock(testSendEmail);
         var env = testEnvBuilder.Build();
 
+        
         try
         {
             await env.Harness.Start();
