@@ -19,6 +19,7 @@ public class MasstransitConsumerTests
         testEnvBuilder.SetupServices(c => c.AddSingleton<IRegistrationService, RegistrationService>());
         var env = testEnvBuilder.Build();
 
+        
         try
         {
             await env.Harness.Start();
