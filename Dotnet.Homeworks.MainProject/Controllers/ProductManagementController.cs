@@ -3,16 +3,15 @@ using Dotnet.Homeworks.Features.Products.Commands.InsertProduct;
 using Dotnet.Homeworks.Features.Products.Commands.UpdateProduct;
 using Dotnet.Homeworks.Features.Products.Queries.GetProducts;
 using Microsoft.AspNetCore.Mvc;
-using IMediator = MediatR.IMediator;
 
 namespace Dotnet.Homeworks.MainProject.Controllers;
 
 [ApiController]
 public class ProductManagementController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly Mediator.IMediator _mediator;
 
-    public ProductManagementController(IMediator mediator)
+    public ProductManagementController(Mediator.IMediator mediator)
     {
         _mediator = mediator;
     }

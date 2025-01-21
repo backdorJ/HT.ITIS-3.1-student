@@ -7,13 +7,18 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _dbContext;
     
-    public UnitOfWork(IProductRepository productRepository, AppDbContext dbContext)
+    public UnitOfWork(
+        IProductRepository productRepository,
+        IUserRepository userRepository,
+        AppDbContext dbContext)
     {
+        UserRepository = userRepository;
         ProductRepository = productRepository;
         _dbContext = dbContext;
     }
 
     public IProductRepository ProductRepository { get; set; }
+    public IUserRepository UserRepository { get; set; }
 
     public async Task SaveChangesAsync(CancellationToken token)
         => await _dbContext.SaveChangesAsync(token);

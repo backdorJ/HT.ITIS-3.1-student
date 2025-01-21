@@ -1,8 +1,9 @@
-using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
+using Dotnet.Homeworks.Mediator;
+using Dotnet.Homeworks.Shared.Dto;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.DeleteProduct;
 
-public class DeleteProductByGuidCommand : ICommand
+public class DeleteProductByGuidCommand : IRequest<Result>
 {
     public DeleteProductByGuidCommand(Guid guid)
     {

@@ -44,7 +44,7 @@ public class MongoEnvironmentBuilder : TestEnvironmentBuilder<MongoEnvironment>
             .AddMediator(FeaturesAssembly)
             .AddSingleton(_contextAccessor ?? InitializeContextAccessor());
         configureServices += s => s.AddValidatorsFromAssembly(FeaturesAssembly);
-        configureServices += s => s.AddPermissionChecks(FeaturesAssembly);
+        configureServices += s => s.AddPermissionChecks(new[] {FeaturesAssembly});
         configureServices += SetupPipelineBehavior;
         ServiceProvider = GetServiceProvider(configureServices);
     }

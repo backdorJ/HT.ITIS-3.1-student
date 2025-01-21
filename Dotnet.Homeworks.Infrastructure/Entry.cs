@@ -1,13 +1,14 @@
-using Dotnet.Homeworks.Domain.Abstractions.Repositories;
-using Dotnet.Homeworks.Infrastructure.UnitOfWork;
-using MediatR;
+﻿using System.Reflection;
+using Dotnet.Homeworks.Infrastructure.Services;
 
 namespace Dotnet.Homeworks.Infrastructure;
 
 public static class Entry
 {
-    public static void AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+        services.AddScoped<IRegistrationService, RegistrationService>();
+
+        return services;
     }
 }

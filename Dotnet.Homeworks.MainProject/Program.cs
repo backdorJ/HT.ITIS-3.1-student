@@ -1,7 +1,8 @@
 using Dotnet.Homeworks.Data.DatabaseContext;
 using Dotnet.Homeworks.Features;
+using Dotnet.Homeworks.Infrastructure.Services;
 using Dotnet.Homeworks.MainProject.Configuration;
-using Dotnet.Homeworks.MainProject.Services;
+using Dotnet.Homeworks.MainProject.ServicesExtensions.Infrastructure;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Masstransit;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,15 @@ var rabbitMqConfig = builder.Configuration
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddScoped<IRegistrationService, RegistrationService>();
-builder.Services.AddScoped<ICommunicationService, CommunicationService>();
+
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.AddMasstransitRabbitMq(rabbitMqConfig);
 builder.Services.AddFeatures();
+builder.Services.AddInfrastructure();
+
+builder.Services.AddScoped<ICommunicationService, CommunicationService>();
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
+
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
