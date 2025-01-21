@@ -4,14 +4,18 @@ using Dotnet.Homeworks.Features.Products.Commands.InsertProduct;
 using Dotnet.Homeworks.Features.Products.Queries.GetProducts;
 using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 using Dotnet.Homeworks.Infrastructure.Cqrs.Queries;
+using Dotnet.Homeworks.Infrastructure.Services;
 using Dotnet.Homeworks.Infrastructure.UnitOfWork;
 using Dotnet.Homeworks.Infrastructure.Validation.PermissionChecker.DependencyInjectionExtensions;
+using Dotnet.Homeworks.Mailing.API.Services;
 using Dotnet.Homeworks.MainProject.Controllers;
+using Dotnet.Homeworks.Mediator;
 using Dotnet.Homeworks.Mediator.DependencyInjectionExtensions;
 using Dotnet.Homeworks.Shared.Dto;
 using Dotnet.Homeworks.Tests.Shared.RepositoriesMocks;
 using Dotnet.Homeworks.Tests.Shared.TestEnvironmentBuilder;
 using FluentValidation;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -52,11 +56,15 @@ internal class CqrsEnvironmentBuilder : TestEnvironmentBuilder<CqrsEnvironment>
             .AddSingleton<UserManagementController>()
             .AddSingleton<IProductRepository>(ProductRepositoryMock)
             .AddSingleton<IUserRepository>(UserRepositoryMock)
+            .AddSingleton<ICommunicationService, CommunicationService>()
+            .AddSingleton<IRegistrationService, RegistrationService>()
+            .AddSingleton(Substitute.For<IMailingService>())
+            .AddMassTransitTestHarness()
             .AddSingleton(HttpContextAccessorMock)
             .AddSingleton(UnitOfWork);
         if (IsCqrsComplete()) configureServices += s => s
             .AddValidatorsFromAssembly(Features.Helpers.AssemblyReference.Assembly)
-            .AddPermissionChecks(Features.Helpers.AssemblyReference.Assembly);
+            .AddPermissionChecks(new []{ Features.Helpers.AssemblyReference.Assembly });
 
         configureServices = SetupMediator(configureServices);
 
@@ -89,7 +97,7 @@ internal class CqrsEnvironmentBuilder : TestEnvironmentBuilder<CqrsEnvironment>
             .SelectMany(x => x.GetTypes())
             .Where(type => type.GetInterfaces().Any(interfaceType =>
                 interfaceType.IsGenericType &&
-                interfaceType.GetGenericTypeDefinition() == typeof(Mediator.IPipelineBehavior<,>)));
+                interfaceType.GetGenericTypeDefinition() == typeof(IPipelineBehavior<,>)));
 
         return pipelineBehaviors;
     }
@@ -155,7 +163,7 @@ internal class CqrsEnvironmentBuilder : TestEnvironmentBuilder<CqrsEnvironment>
             foreach (var type in types)
             {
                 configureServices += s => s
-                    .AddSingleton(typeof(Mediator.IPipelineBehavior<,>), type);
+                    .AddSingleton(typeof(IPipelineBehavior<,>), type);
             }
         }
 
@@ -167,7 +175,7 @@ internal class CqrsEnvironmentBuilder : TestEnvironmentBuilder<CqrsEnvironment>
         if (!_withMockedMediator)
         {
             if (IsCqrsComplete())
-                CustomMediator = ServiceProvider!.GetRequiredService<Mediator.IMediator>();
+                CustomMediator = ServiceProvider!.GetRequiredService<IMediator>();
             else
                 MediatR = ServiceProvider!.GetRequiredService<MediatR.IMediator>();
         }

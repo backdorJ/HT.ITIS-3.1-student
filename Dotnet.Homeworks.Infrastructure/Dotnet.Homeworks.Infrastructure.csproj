@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Dotnet.Homeworks.Data\Dotnet.Homeworks.Data.csproj" />
+      <ProjectReference Include="..\Dotnet.Homeworks.Mediator\Dotnet.Homeworks.Mediator.csproj" />
       <ProjectReference Include="..\Dotnet.Homeworks.Shared\Dotnet.Homeworks.Shared.csproj" />
     </ItemGroup>
 
@@ -18,7 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MediatR" Version="12.4.1" />
+        <PackageReference Include="FluentValidation" Version="11.11.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+        <PackageReference Include="MassTransit.Abstractions" Version="8.3.1" />
     </ItemGroup>
 
 </Project>

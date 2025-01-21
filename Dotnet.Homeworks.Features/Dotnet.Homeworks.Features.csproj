@@ -16,6 +16,11 @@
       <ProjectReference Include="..\Dotnet.Homeworks.DataAccess\Dotnet.Homeworks.DataAccess.csproj" />
       <ProjectReference Include="..\Dotnet.Homeworks.Domain\Dotnet.Homeworks.Domain.csproj" />
       <ProjectReference Include="..\Dotnet.Homeworks.Infrastructure\Dotnet.Homeworks.Infrastructure.csproj" />
+      <ProjectReference Include="..\Dotnet.Homeworks.Mediator\Dotnet.Homeworks.Mediator.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="11.11.0" />
     </ItemGroup>
 
 </Project>

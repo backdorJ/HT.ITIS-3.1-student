@@ -9,5 +9,6 @@ public static class Entry
     public static void AddDataAccess(this IServiceCollection services)
     {
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }

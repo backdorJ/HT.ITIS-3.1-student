@@ -1,11 +1,11 @@
 using Dotnet.Homeworks.Domain.Entities;
-using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 using Dotnet.Homeworks.Infrastructure.UnitOfWork;
+using Dotnet.Homeworks.Mediator;
 using Dotnet.Homeworks.Shared.Dto;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.InsertProduct;
 
-internal sealed class InsertProductCommandHandler : ICommandHandler<InsertProductCommand, InsertProductDto>
+internal sealed class InsertProductCommandHandler : IRequestHandler<InsertProductCommand, Result<InsertProductDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
 

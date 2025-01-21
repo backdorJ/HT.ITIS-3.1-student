@@ -12,7 +12,7 @@ services:
       - "5433:5432"
     networks:
       - dotnet_network
-    
+  
   dotnet_rabbitmq:
     image: rabbitmq:3-management
     environment:
@@ -21,21 +21,38 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    container_name: rabbitmq
     volumes:
-      - ./rabbitmq:/var/lib/rabbitmq
+      - ./rabbitmq/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
     networks:
       - dotnet_network
 
   dotnet_minio:
     image: minio/minio:latest
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    ports:
+      - "9001:9000"
+    networks:
+      - dotnet_network
 
   dotnet_mongodb:
     image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - dotnet_network
 
   dotnet_jaeger:
     image: jaegertracing/all-in-one:latest
-    
+    ports:
+      - "16686:16686"
+    networks:
+      - dotnet_network
+  
   dotnet_main:
     build:
       context: .
@@ -43,6 +60,9 @@ services:
     depends_on:
       - dotnet_postgres
       - dotnet_rabbitmq
+      - dotnet_minio
+      - dotnet_mongodb
+      - dotnet_jaeger
     environment:
       ASPNETCORE_URLS: "http://*:80"
       RabbitMqConfig__Username: "DamirkaSuperGod"
@@ -53,7 +73,7 @@ services:
       - "9000:80"
     networks:
       - dotnet_network
-    
+  
   dotnet_mailing:
     build:
       context: .
@@ -70,12 +90,10 @@ services:
       RabbitMqConfig__Hostname: "dotnet_rabbitmq:5672"
     networks:
       - dotnet_network
-      
-  dotnet_storage:
-    image: dotnet-web
 
 volumes:
   postgres_data:
+  mongodb_data:
 
 networks:
   dotnet_network:

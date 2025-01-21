@@ -1,10 +1,9 @@
-using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 using Dotnet.Homeworks.Infrastructure.UnitOfWork;
 using Dotnet.Homeworks.Shared.Dto;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.UpdateProduct;
 
-internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand>
+internal sealed class UpdateProductCommandHandler : Mediator.IRequestHandler<UpdateProductCommand, Result>
 {
     private readonly IUnitOfWork _unitOfWork;
 
