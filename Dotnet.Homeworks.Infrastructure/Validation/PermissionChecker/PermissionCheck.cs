@@ -29,7 +29,7 @@ public class PermissionCheck : IPermissionCheck
                     x == typeof(IClientRequest) ||
                     x == typeof(IAdminRequest)))
         {
-            return ResultFactory.CreateResult<TResponse>(false);
+            return ResultFactory.CreateResult<TResponse>(true);
         }
 
         var permissionCheckIface = GetPermissionCheckIfaceType(requestType);

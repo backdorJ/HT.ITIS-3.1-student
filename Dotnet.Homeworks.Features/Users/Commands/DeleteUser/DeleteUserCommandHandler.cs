@@ -36,6 +36,7 @@ public class DeleteUserCommandHandler : CqrsDecorator<DeleteUserCommand, Result>
             var userRepo = _unitOfWork.UserRepository;
 
             await userRepo.DeleteUserByGuidAsync(request.Guid, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return new Result(true);
         }
         catch (Exception e)

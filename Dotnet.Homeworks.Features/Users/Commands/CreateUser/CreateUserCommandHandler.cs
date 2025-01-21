@@ -21,7 +21,6 @@ public class CreateUserCommandHandler :
     public CreateUserCommandHandler(
         IEnumerable<IValidator<CreateUserCommand>> validators,
         IPermissionCheck permissionCheck,
-        IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IRegistrationService registrationService
     ) : base(validators, permissionCheck)
@@ -53,6 +52,7 @@ public class CreateUserCommandHandler :
             var id = await userRepo.InsertUserAsync(user, cancellationToken);
             
             await _registrationService.RegisterAsync(new RegisterUserDto(request.Name, request.Email), cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             
             return new Result<CreateUserDto>(new CreateUserDto(id), true);
         }

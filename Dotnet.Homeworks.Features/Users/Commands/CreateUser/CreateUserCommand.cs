@@ -1,5 +1,4 @@
 ﻿using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
-
 namespace Dotnet.Homeworks.Features.Users.Commands.CreateUser;
 
 public class CreateUserCommand : ICommand<CreateUserDto>

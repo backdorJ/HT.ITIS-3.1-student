@@ -21,10 +21,10 @@ public class DeleteUserByAdminCommandHandler : ICommandHandler<DeleteUserByAdmin
 
         try
         {
-            var isExist = await _unitOfWork.UserRepository.GetUserByGuidAsync(request.Guid, cancellationToken);
-            
-            if (isExist == null)
-                return new Result(false, $"User {request.Guid} does not exist.");
+            // var isExist = await _unitOfWork.UserRepository.GetUserByGuidAsync(request.Guid, cancellationToken);
+            //
+            // if (isExist == null)
+            //     return new Result(false, $"User {request.Guid} does not exist.");
             
             await userRepo.DeleteUserByGuidAsync(request.Guid, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -1,4 +1,5 @@
-﻿using Dotnet.Homeworks.Infrastructure.Cqrs.Queries;
+﻿using Dotnet.Homeworks.Domain.Abstractions.Repositories;
+using Dotnet.Homeworks.Infrastructure.Cqrs.Queries;
 using Dotnet.Homeworks.Infrastructure.UnitOfWork;
 using Dotnet.Homeworks.Infrastructure.Validation.Decorators;
 using Dotnet.Homeworks.Infrastructure.Validation.PermissionChecker;
@@ -12,13 +13,16 @@ public class GetUserQueryHandler :
     IQueryHandler<GetUserQuery, GetUserDto>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserRepository _userRepository;
 
     public GetUserQueryHandler(
         IEnumerable<IValidator<GetUserQuery>> validators,
         IPermissionCheck permissionCheck,
-        IUnitOfWork unitOfWork
-    ) : base(validators, permissionCheck)
+        IUnitOfWork unitOfWork,
+        IUserRepository userRepository)
+     : base(validators, permissionCheck)
     {
+        _userRepository = userRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -34,9 +38,7 @@ public class GetUserQueryHandler :
 
         try
         {
-            var userRepo = _unitOfWork.UserRepository;
-            
-            var user = await userRepo.GetUserByGuidAsync(request.Guid, cancellationToken);
+            var user = await _userRepository.GetUserByGuidAsync(request.Guid, cancellationToken);
             
             return user == null
                 ? new Result<GetUserDto>(null, false, "User not found")
