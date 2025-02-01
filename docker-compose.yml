@@ -28,15 +28,34 @@ services:
 
   dotnet_minio:
     image: minio/minio:latest
-    command: server /data
-    environment:
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
+    command: server --console-address ":9001" /data
     ports:
-      - "9001:9000"
+      - "9002:9000"
+      - "9003:9001"
+    environment:
+      MINIO_ROOT_USER: damir
+      MINIO_ROOT_PASSWORD: damir
     networks:
       - dotnet_network
 
+  dotnet_storage:
+    image: dotnet-web-storage
+    build:
+      context: .
+      dockerfile: Dotnet.Homeworks.Storage.API/Dockerfile
+    ports:
+      - "8082:8082"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://*:8082
+      MinioConfig__Username: damir
+      MinioConfig__Password: damir
+      MinioConfig__Endpoint: dotnet_minio
+      MinioConfig__Port: 9000
+      MinioConfig__WithSsl: false
+    depends_on:
+      - dotnet_minio
+  
   dotnet_mongodb:
     image: mongo:latest
     volumes:

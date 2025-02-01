@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <UserSecretsId>a06348f9-d2d7-40ea-b34b-99cd5e1f2cad</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Dotnet.Homeworks.Shared\Dotnet.Homeworks.Shared.csproj" />
+        <PackageReference Include="Minio" Version="5.0.0" />
     </ItemGroup>
 
 </Project>
