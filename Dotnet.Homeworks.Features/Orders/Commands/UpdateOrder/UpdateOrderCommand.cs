@@ -1,8 +1,9 @@
 using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
+using Dotnet.Homeworks.Infrastructure.Validation.RequestTypes;
 
 namespace Dotnet.Homeworks.Features.Orders.Commands.UpdateOrder;
 
-public class UpdateOrderCommand : ICommand
+public class UpdateOrderCommand : IOrderOwnerRequest, ICommand
 {
     public UpdateOrderCommand(Guid orderId, IEnumerable<Guid> productsIds)
     {
@@ -10,6 +11,6 @@ public class UpdateOrderCommand : ICommand
         ProductsIds = productsIds;
     }
 
-    public Guid OrderId { get; init; }
+    public Guid OrderId { get; set; }
     public IEnumerable<Guid> ProductsIds { get; init; }
 }
