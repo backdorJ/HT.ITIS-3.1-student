@@ -1,9 +1,8 @@
-using Dotnet.Homeworks.Mediator;
-using Dotnet.Homeworks.Shared.Dto;
+using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.InsertProduct;
 
-public class InsertProductCommand : IRequest<Result<InsertProductDto>> 
+public class InsertProductCommand : ICommand<InsertProductDto> 
 {
     public InsertProductCommand(string name)
     {
@@ -11,4 +10,5 @@ public class InsertProductCommand : IRequest<Result<InsertProductDto>>
     }
     
     public string Name { get; init; }
+    public Guid OrderId { get; set; }
 }

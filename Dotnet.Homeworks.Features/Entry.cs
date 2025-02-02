@@ -2,6 +2,7 @@ using Dotnet.Homeworks.DataAccess;
 using Dotnet.Homeworks.Features.Helpers;
 using Dotnet.Homeworks.Infrastructure;
 using Dotnet.Homeworks.Mediator.DependencyInjectionExtensions;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dotnet.Homeworks.Features;
@@ -17,5 +18,7 @@ public static class Entry
             AssemblyReference.Assembly);
         services.AddDataAccess();
         services.AddInfrastructure();
+        services.AddHttpContextAccessor();
+        services.AddValidatorsFromAssembly(typeof(Entry).Assembly);
     }
 }

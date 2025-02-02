@@ -1,9 +1,9 @@
-using Dotnet.Homeworks.Mediator;
-using Dotnet.Homeworks.Shared.Dto;
+using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
+using Dotnet.Homeworks.Infrastructure.Validation.RequestTypes;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.DeleteProduct;
 
-public class DeleteProductByGuidCommand : IRequest<Result>
+public class DeleteProductByGuidCommand : IOrderOwnerRequest, ICommand
 {
     public DeleteProductByGuidCommand(Guid guid)
     {
@@ -11,4 +11,5 @@ public class DeleteProductByGuidCommand : IRequest<Result>
     }
     
     public Guid Guid { get; init; }
+    public Guid OrderId { get; set; }
 }

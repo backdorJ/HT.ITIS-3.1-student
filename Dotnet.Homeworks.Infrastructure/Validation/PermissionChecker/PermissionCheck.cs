@@ -27,7 +27,8 @@ public class PermissionCheck : IPermissionCheck
                 .GetInterfaces()
                 .Any(x =>
                     x == typeof(IClientRequest) ||
-                    x == typeof(IAdminRequest)))
+                    x == typeof(IAdminRequest) || 
+                    x == typeof(IOrderOwnerRequest)))
         {
             return ResultFactory.CreateResult<TResponse>(true);
         }
@@ -50,7 +51,8 @@ public class PermissionCheck : IPermissionCheck
         var ifaces = new[]
         {
             requestType.GetInterface(nameof(IClientRequest)),
-            requestType.GetInterface(nameof(IAdminRequest))
+            requestType.GetInterface(nameof(IAdminRequest)),
+            requestType.GetInterface(nameof(IOrderOwnerRequest))
         };
 
         return typeof(IPermissionCheck<>)

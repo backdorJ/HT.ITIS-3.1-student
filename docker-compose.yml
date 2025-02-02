@@ -58,6 +58,9 @@ services:
   
   dotnet_mongodb:
     image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - mongodb_data:/data/db
     ports:
