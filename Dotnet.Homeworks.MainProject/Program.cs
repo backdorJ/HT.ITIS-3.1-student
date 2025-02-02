@@ -4,6 +4,7 @@ using Dotnet.Homeworks.Infrastructure.Services;
 using Dotnet.Homeworks.MainProject.Configuration;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Infrastructure;
 using Dotnet.Homeworks.MainProject.ServicesExtensions.Masstransit;
+using Dotnet.Homeworks.MainProject.ServicesExtensions.MongoDb;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +19,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 
+builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection(nameof(MongoDbConfig)));
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.AddMasstransitRabbitMq(rabbitMqConfig);
+builder.Services.AddMongoClient(builder.Configuration.GetSection(nameof(MongoDbConfig)).Get<MongoDbConfig>());
 builder.Services.AddFeatures();
 builder.Services.AddInfrastructure();
 

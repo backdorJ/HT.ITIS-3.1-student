@@ -1,9 +1,8 @@
-using Dotnet.Homeworks.Mediator;
-using Dotnet.Homeworks.Shared.Dto;
+using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.UpdateProduct;
 
-public class UpdateProductCommand : IRequest<Result>
+public class UpdateProductCommand : ICommand
 {
     public UpdateProductCommand(Guid guid, string name)
     {

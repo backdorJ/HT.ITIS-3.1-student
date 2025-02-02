@@ -17,16 +17,17 @@ public class CreateUserCommandHandler :
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRegistrationService _registrationService;
+    private readonly IUserRepository _userRepository;   
 
     public CreateUserCommandHandler(
         IEnumerable<IValidator<CreateUserCommand>> validators,
         IPermissionCheck permissionCheck,
         IUnitOfWork unitOfWork,
-        IRegistrationService registrationService
-    ) : base(validators, permissionCheck)
+        IRegistrationService registrationService, IUserRepository userRepository) : base(validators, permissionCheck)
     {
         _unitOfWork = unitOfWork;
         _registrationService = registrationService;
+        _userRepository = userRepository;
     }
 
     public async Task<Result<CreateUserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -41,7 +42,6 @@ public class CreateUserCommandHandler :
 
         try
         {
-            var userRepo = _unitOfWork.UserRepository;
             
             var user = new User
             {
@@ -49,7 +49,7 @@ public class CreateUserCommandHandler :
                 Name = request.Name,
             };
             
-            var id = await userRepo.InsertUserAsync(user, cancellationToken);
+            var id = await _userRepository.InsertUserAsync(user, cancellationToken);
             
             await _registrationService.RegisterAsync(new RegisterUserDto(request.Name, request.Email), cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

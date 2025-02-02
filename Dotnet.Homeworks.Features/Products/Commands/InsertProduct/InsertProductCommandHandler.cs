@@ -1,17 +1,21 @@
+using Dotnet.Homeworks.Domain.Abstractions.Repositories;
 using Dotnet.Homeworks.Domain.Entities;
+using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 using Dotnet.Homeworks.Infrastructure.UnitOfWork;
 using Dotnet.Homeworks.Mediator;
 using Dotnet.Homeworks.Shared.Dto;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.InsertProduct;
 
-internal sealed class InsertProductCommandHandler : IRequestHandler<InsertProductCommand, Result<InsertProductDto>>
+internal sealed class InsertProductCommandHandler : ICommandHandler<InsertProductCommand, InsertProductDto>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IProductRepository _productRepository;
 
-    public InsertProductCommandHandler(IUnitOfWork unitOfWork)
+    public InsertProductCommandHandler(IUnitOfWork unitOfWork, IProductRepository productRepository)
     {
         _unitOfWork = unitOfWork;
+        _productRepository = productRepository;
     }
 
     public async Task<Result<InsertProductDto>> Handle(
@@ -19,12 +23,10 @@ internal sealed class InsertProductCommandHandler : IRequestHandler<InsertProduc
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-
-        var productRepo = _unitOfWork.ProductRepository;
-
+        
         try
         {
-            var guid = await productRepo.InsertProductAsync(new Product
+            var guid = await _productRepository.InsertProductAsync(new Product
                 {
                     Name = request.Name
                 },

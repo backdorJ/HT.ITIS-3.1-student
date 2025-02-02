@@ -30,7 +30,7 @@ public class ProductRepositoryMock : IProductRepository
 
     public Task<Product> GetProductByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var product = _products[id];
+        var product = _products.GetValueOrDefault(id);
         return Task.FromResult(product);
     }
 

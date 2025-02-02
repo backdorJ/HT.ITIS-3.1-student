@@ -1,10 +1,11 @@
+using Dotnet.Homeworks.Infrastructure.Cqrs.Commands;
 using Dotnet.Homeworks.Infrastructure.UnitOfWork;
 using Dotnet.Homeworks.Mediator;
 using Dotnet.Homeworks.Shared.Dto;
 
 namespace Dotnet.Homeworks.Features.Products.Commands.DeleteProduct;
 
-internal sealed class DeleteProductByGuidCommandHandler : IRequestHandler<DeleteProductByGuidCommand, Result>
+internal sealed class DeleteProductByGuidCommandHandler : ICommandHandler<DeleteProductByGuidCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
 
